@@ -2,13 +2,14 @@ import {Invoice} from "../../models/invoice";
 import React from "react";
 import {DataTable, DataTableRowEditCompleteParams, DataTableRowReorderParams} from "primereact/datatable";
 import {Client} from "../../models/client";
-import {Column, ColumnBodyOptions, ColumnEditorOptions} from "primereact/column";
+import {Column, ColumnEditorOptions} from "primereact/column";
 import {InputText} from "primereact/inputtext";
 import {Calendar} from "primereact/calendar";
 import {ConfirmDialog} from "primereact/confirmdialog";
 import {Dialog} from "primereact/dialog";
 import {TimesheetEditor} from "./TimesheetEditor";
 import {InputNumber} from "primereact/inputnumber";
+import {Exchange} from "../../Exchange";
 
 export interface InvoiceTableProps {
     client: Client;
@@ -156,9 +157,31 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
             </span>;
         }
 
+        const totalInRonBody = (options: Invoice) => {
+            const date = new Date(options.invoiceDate);
+            const rate = Exchange.getExchangeRate(date, "USD");
+            if (!rate) {
+                return <span>Rate not found</span>;
+            }
+            const total = Invoice.computeTotal(options);
+            const totalInRon = total * Number(rate);
+            return <span>{totalInRon.toLocaleString('ro-RO', {style: 'currency', currency: 'RON'})}
+            </span>;
+        }
+
+        const ronRateBody = (options: Invoice) => {
+            const date = new Date(options.invoiceDate);
+            const rate = Exchange.getExchangeRate(date, "USD");
+            if (!rate) {
+                return <span>Rate not found</span>;
+            }
+            return <span>{Number(rate)}
+            </span>;
+        }
+
         const totalHoursBody = (options: Invoice) => {
             const hours = options.workDays.reduce((acc, day) => acc + day.hours, 0);
-            return <span>{hours}
+            return <span>{hours.toFixed(2)}
             </span>;
         }
 
@@ -180,6 +203,8 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
                         <Column field="hourlyRate" header="Hourly Rate" editor={(options) => currencyEditor(options)} body={hourlyRateBody}></Column>
                         <Column header="Worked Hours" body={totalHoursBody} headerStyle={{width: '8%', minWidth: '8rem'}}></Column>
                         <Column header="Invoice Total" body={totalBody} headerStyle={{width: '8%', minWidth: '8rem'}}></Column>
+                        <Column header="RON Rate" body={ronRateBody} headerStyle={{width: '8%', minWidth: '8rem'}}></Column>
+                        <Column header="RON Total" body={totalInRonBody} headerStyle={{width: '8%', minWidth: '8rem'}}></Column>
                         <Column header="Edit" rowEditor headerStyle={{width: '8%', minWidth: '8rem'}}
                                 bodyStyle={{textAlign: 'center'}}></Column>
                         <Column header={"Timesheet"} body={editDetailsButton} headerStyle={{width: '5%', minWidth: '8rem'}}

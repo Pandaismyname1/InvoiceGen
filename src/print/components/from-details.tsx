@@ -25,10 +25,10 @@ render() {
                     <b>Phone:</b> {this.props.phone}
                 </div>
                 <div >
-                    <b>Registration number:</b> {this.props.registrationNumber}
+                    <b>Reg. No.:</b> {this.props.registrationNumber}
                 </div>
                 <div >
-                    <b>VAT number:</b> {this.props.vatNumber}
+                    <b>VAT.No. / Tax Id:</b> {this.props.vatNumber}
                 </div>
             </div>
         );

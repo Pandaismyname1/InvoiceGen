@@ -78,7 +78,16 @@ export class TimesheetEditor extends React.Component<TimesheetEditorPropsAndDisp
                 result.hours = hours;
                 return result;
             }).filter(x => x.hours).sort((a, b) => a.date.getTime() - b.date.getTime());
-            this.setState({selectedSheetName: sheetName, selectedSheet: sheet, generatedWorkdays: workDays})
+            const aggregatedWorkDays: {[key: string]: WorkDay} = {};
+            workDays.forEach(workDay => {
+                const key = workDay.date.toDateString();
+                if (aggregatedWorkDays[key] == null) {
+                    aggregatedWorkDays[key] = workDay;
+                } else {
+                    aggregatedWorkDays[key].hours += workDay.hours;
+                }
+            });
+            this.setState({selectedSheetName: sheetName, selectedSheet: sheet, generatedWorkdays: Object.values(aggregatedWorkDays)});
         }
     }
 
@@ -123,7 +132,7 @@ export class TimesheetEditor extends React.Component<TimesheetEditorPropsAndDisp
         // TODO update the workdays when the cell is being edited
         const onRowEditComplete = (e: DataTableRowEditCompleteParams) => {
             let workDays = [...this.props.invoice.workDays];
-            workDays[e.index] = e.data;
+            workDays[e.index] = e.newData;
             this.props.updateInvoice({...this.props.invoice, workDays});
         }
 
@@ -147,7 +156,7 @@ export class TimesheetEditor extends React.Component<TimesheetEditorPropsAndDisp
         }
 
         const numberEditor = (options: ColumnEditorOptions) => {
-            return <InputNumber type="text" value={options.value}
+            return <InputNumber type="text" value={options.value} minFractionDigits={2} maxFractionDigits={2}
                                 onChange={(e) => options.editorCallback?.(e.value)}/>;
         }
 
@@ -161,10 +170,11 @@ export class TimesheetEditor extends React.Component<TimesheetEditorPropsAndDisp
             <div>
                 <DataTable value={this.props.invoice.workDays} key="nonce"
                            header={header} reorderableRows onRowReorder={onRowReorder}
-                           editMode="cell" dataKey="companyName" onRowEditComplete={onRowEditComplete}
+                           editMode="row" dataKey="date" onRowEditComplete={onRowEditComplete}
                            responsiveLayout="scroll">
                     <Column field="date" header="Date" body={workDayBody} editor={dateEditor}/>
                     <Column field="hours" header="Hours" editor={numberEditor}/>
+                    <Column header="Edit" rowEditor headerStyle={{width: '8%', minWidth: '8rem'}}/>
                     <Column header="Delete" body={deleteButton} headerStyle={{width: '5%', minWidth: '8rem'}}
                             bodyStyle={{textAlign: 'center'}}></Column>
                 </DataTable>

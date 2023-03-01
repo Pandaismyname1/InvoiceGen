@@ -45,6 +45,7 @@
     "primeicons": "^6.0.1",
     "primereact": "^8.7.3",
     "prompts": "^2.4.2",
+    "raw-loader": "^4.0.2",
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
     "react-dev-utils": "^12.0.1",
@@ -72,8 +73,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "download-bnr-2022": "curl -o src/data/bnr-2022.xml https://www.bnr.ro/files/xml/years/nbrfxrates2022.xml",
-    "download-bnr-2023": "curl -o src/data/bnr-2023.xml https://www.bnr.ro/files/xml/years/nbrfxrates2023.xml"
+    "download-bnr-2022": "curl -o public/data/bnr-2022.xml https://www.bnr.ro/files/xml/years/nbrfxrates2022.xml",
+    "download-bnr-2023": "curl -o public/data/bnr-2023.xml https://www.bnr.ro/files/xml/years/nbrfxrates2023.xml"
   },
   "eslintConfig": {
     "extends": [

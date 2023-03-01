@@ -28,12 +28,16 @@ export function SummaryTable(props: SummaryTableProps) {
         </div>
     );
 
+    const hoursBody = (rowData: SummaryTableItem) => {
+        return rowData.quantity.toFixed(2)
+    }
+
     return (
         <DataTable value={props.items} showGridlines size="small" footer={footer}>
                 <Column field="description" header="Description"></Column>
                 <Column field="unit" header="Unit"></Column>
                 <Column field="unitCostFormattedWithCurrency" header="Unit Cost"></Column>
-                <Column field="quantity" header="Quantity"></Column>
+                <Column field="quantity" header="Quantity" body={hoursBody}></Column>
                 <Column field="totalCostFormattedWithCurrency" header="Total Cost" ></Column>
         </DataTable>
     );

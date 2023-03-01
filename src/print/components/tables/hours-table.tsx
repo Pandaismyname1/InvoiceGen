@@ -23,11 +23,15 @@ export function HoursTable(props: HoursTableProps) {
         </div>
     );
 
+    const hoursBody = (rowData: WorkDay) => {
+        return rowData.hours.toFixed(2)
+    }
+
     return (
         <DataTable value={props.items} showGridlines size="small" footer={footer}>
             <Column field="date" header="Date" body={workDayBody}></Column>
             <Column field="unit" header="Unit" headerStyle={{width: '100px'}}></Column>
-            <Column field="hours" header="Quantity" headerStyle={{width: '100px'}}></Column>
+            <Column field="hours" header="Quantity" headerStyle={{width: '100px'}} body={hoursBody}></Column>
         </DataTable>
     );
 }
