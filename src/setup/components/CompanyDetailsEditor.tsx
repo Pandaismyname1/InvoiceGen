@@ -90,6 +90,37 @@ export class CompanyDetailsEditor extends React.Component<CompanyDetailsEditorPr
                             <label htmlFor="companyVatNumber">VAT Number</label>
                         </span>
                     </div>
+                    <div className="p-col-12 p-md-6 mt-8">
+                        <span className="p-float-label">
+                            <InputText id="companyBankName" value={this.props.companyDetails.bankName}
+                                        onChange={(e) => this.props.updateCompanyDetails({
+                                            ...this.props.companyDetails,
+                                            bankName: (e.target as HTMLInputElement).value
+                                        })}/>
+                            <label htmlFor="companyBankName">Bank Name</label>
+                        </span>
+                    </div>
+                    <div className="p-col-12 p-md-6 mt-8">
+                        <span className="p-float-label">
+                            <InputText id="companyBankAccountNumber"
+                                        value={this.props.companyDetails.bankAccountNumber}
+                                        onChange={(e) => this.props.updateCompanyDetails({
+                                            ...this.props.companyDetails,
+                                            bankAccountNumber: (e.target as HTMLInputElement).value
+                                        })}/>
+                            <label htmlFor="companyBankAccountNumber">Bank Account Number</label>
+                        </span>
+                    </div>
+                    <div className="p-col-12 p-md-6 mt-8">
+                        <span className="p-float-label">
+                            <InputText id="companyCapital" value={this.props.companyDetails.capital}
+                                        onChange={(e) => this.props.updateCompanyDetails({
+                                            ...this.props.companyDetails,
+                                            capital: (e.target as HTMLInputElement).value
+                                        })}/>
+                            <label htmlFor="companyCapital">Capital</label>
+                        </span>
+                    </div>
                 </div>
             </div>
         )

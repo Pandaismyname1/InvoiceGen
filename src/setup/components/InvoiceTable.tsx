@@ -18,7 +18,7 @@ export interface InvoiceTableProps {
 
 export interface InvoiceTableDispatch {
     updateInvoices: (invoices: Invoice[]) => void;
-    setPrintInvoice: (invoice: Invoice) => void;
+    setPrintInvoice: (invoice: Invoice, language: 'EN' | 'RO') => void;
 }
 
 export type InvoiceTablePropsAndDispatch = InvoiceTableProps & InvoiceTableDispatch;
@@ -120,11 +120,27 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
             );
         }
 
-        const printButton = (rowData: Invoice) => {
+        const printEN = (rowData: Invoice) => {
             return (
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
-                            this.props.setPrintInvoice(rowData);
+                            this.props.setPrintInvoice(rowData, "EN");
+                            setTimeout(() => {
+                                window.print()
+                            }, 100);
+                        }}
+                >
+                    Print
+                </button>
+            );
+        }
+
+        const printRO = (rowData: Invoice) => {
+            return (
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                        onClick={() => {
+                            this.props.setPrintInvoice(rowData, "RO");
+
                             setTimeout(() => {
                                 window.print()
                             }, 100);
@@ -185,11 +201,13 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
             </span>;
         }
 
+        const orderedInvoices = this.props.invoices.sort((a, b) => a.invoiceDate > b.invoiceDate ? -1 : 1);
+
         return (
             <div>
                 <h2 className="text-2xl">Invoices</h2>
                 <div className="mt-8">
-                    <DataTable value={this.props.invoices}
+                    <DataTable value={orderedInvoices}
                                paginator={true} rows={10} rowsPerPageOptions={[10, 20, 50]}
                                header={header} reorderableRows onRowReorder={onRowReorder}
                                editMode="row" dataKey="companyName" onRowEditComplete={onRowEditComplete}
@@ -209,7 +227,9 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
                                 bodyStyle={{textAlign: 'center'}}></Column>
                         <Column header={"Timesheet"} body={editDetailsButton} headerStyle={{width: '5%', minWidth: '8rem'}}
                                 bodyStyle={{textAlign: 'center'}}></Column>
-                        <Column header="Print" body={printButton} headerStyle={{width: '5%', minWidth: '8rem'}}
+                        <Column header="Print EN" body={printEN} headerStyle={{width: '5%', minWidth: '8rem'}}
+                                bodyStyle={{textAlign: 'center'}}></Column>
+                        <Column header="Print RO" body={printRO} headerStyle={{width: '5%', minWidth: '8rem'}}
                                 bodyStyle={{textAlign: 'center'}}></Column>
                         <Column header="Delete" body={deleteButton} headerStyle={{width: '5%', minWidth: '8rem'}}
                                 bodyStyle={{textAlign: 'center'}}></Column>

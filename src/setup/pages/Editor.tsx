@@ -13,7 +13,7 @@ export interface EditorProps {
 
 export interface EditorDispatch {
     updateAppData: (appData: AppData) => void;
-    setPrintInvoice: (invoice: Invoice) => void;
+    setPrintInvoice: (invoice: Invoice, language: 'EN' | 'RO') => void;
     setClient: (client: Client) => void;
 }
 

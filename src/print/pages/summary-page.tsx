@@ -8,6 +8,8 @@ import {Invoice} from "../../models/invoice";
 import {CompanyDetails} from "../../models/companyDetails";
 import {PersonalDetails} from "../../models/personalDetails";
 import {Client} from "../../models/client";
+import {VatAndConversionRates} from "../components/vat-and-conversion-rates";
+import {Issuer} from "../components/issuer";
 
 
 export interface SummaryPageProps {
@@ -15,6 +17,7 @@ export interface SummaryPageProps {
     companyDetails: CompanyDetails;
     personalDetails: PersonalDetails;
     client: Client;
+    language: 'EN' | 'RO';
 }
 
 export class SummaryPage extends Component<SummaryPageProps> {
@@ -27,6 +30,7 @@ export class SummaryPage extends Component<SummaryPageProps> {
             <GenericPage invoice={this.props.invoice}
                          companyDetails={this.props.companyDetails}
                          personalDetails={this.props.personalDetails}
+                         language={this.props.language}
                          currentPage={1}
                          totalPages={2}>
                 <Spacing height={10}></Spacing>
@@ -37,6 +41,14 @@ export class SummaryPage extends Component<SummaryPageProps> {
                            email={this.props.client.email}></ToDetails>
                 <Spacing height={10}></Spacing>
                 <SummaryTable items={items}></SummaryTable>
+                {this.props.language === 'RO' && <VatAndConversionRates invoice={this.props.invoice}></VatAndConversionRates>}
+                {this.props.language === 'RO' &&
+                    <div>
+                        <Spacing height={10}></Spacing>
+                        <Issuer personalDetails={this.props.personalDetails}
+                                companyDetails={this.props.companyDetails}
+                                language={this.props.language}/>
+                    </div>}
             </GenericPage>
             </div>
         );

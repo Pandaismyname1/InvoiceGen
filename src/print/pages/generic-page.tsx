@@ -15,6 +15,7 @@ export interface GenericPageProps {
     personalDetails: PersonalDetails;
     currentPage: number;
     totalPages: number;
+    language: 'EN' | 'RO';
 
 }
 
@@ -30,11 +31,15 @@ class GenericPage extends Component<GenericPageProps> {
                         <FromDetails address1={this.props.companyDetails.address1}
                                      address2={this.props.companyDetails.address2}
                                      phone={this.props.companyDetails.phone}
+                                     language={this.props.language}
                                      registrationNumber={this.props.companyDetails.registrationNumber}
-                                     vatNumber={this.props.companyDetails.vatNumber}></FromDetails>
+                                     vatNumber={this.props.companyDetails.vatNumber}
+                                     bank={this.props.companyDetails.bankName}
+                                     bankAccount={this.props.companyDetails.bankAccountNumber}
+                                     capital={this.props.companyDetails.capital}></FromDetails>
                     </div>
                     <div>
-                        <Essentials invoice={this.props.invoice}></Essentials>
+                        <Essentials invoice={this.props.invoice} language={this.props.language}></Essentials>
                     </div>
                 </div>
                 <Spacing height={20}></Spacing>

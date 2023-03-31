@@ -6,5 +6,8 @@ export class CompanyDetails {
     email: string = "";
     registrationNumber: string = "";
     vatNumber: string = "";
+    bankName: string = "";
+    bankAccountNumber: string = "";
+    capital: string = "";
 }
 

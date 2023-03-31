@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import SummaryPage from "./print/pages/summary-page";
 import "primereact/resources/themes/lara-light-indigo/theme.css"  //theme
@@ -16,25 +15,30 @@ import {Callback} from "./print/components/callback";                           
 function App() {
     const [appData, setAppData] = useLocalStorage<AppData>(new AppData(), 'appData');
     const [printableInvoice, setPrintableInvoice] = useState<Invoice | null>(null);
+    const [printableLanguage, setPrintableLanguage] = useState<'EN' | 'RO'>('EN');
     const [client, setClient] = useState<Client | null>(null);
     return (
         <div>
             <Editor appData={appData} updateAppData={(appData) => setAppData(appData)}
-                    setPrintInvoice={(invoice) => {
+                    setPrintInvoice={(invoice, language) => {
                         setPrintableInvoice(invoice)
+                        setPrintableLanguage(language)
                     }}
                     setClient={(client) => {
                         setClient(client)
                     }}></Editor>
-            {printableInvoice && client &&
+            {printableInvoice && client && printableLanguage &&
                 <div className="hidden print:block">
                     <SummaryPage invoice={printableInvoice}
                                  companyDetails={appData.companyDetails}
                                  personalDetails={appData.personalDetails}
+                                 language={printableLanguage}
                                  client={client}></SummaryPage>
+                    {printableLanguage === 'EN' &&
                     <HoursPage invoice={printableInvoice}
                                companyDetails={appData.companyDetails}
                                personalDetails={appData.personalDetails}></HoursPage>
+                    }
 
                     <Callback contactName={appData.personalDetails.name}
                               contactEmail={appData.personalDetails.email}

@@ -19,11 +19,13 @@ class HoursPage extends Component<HoursPageProps> {
             <GenericPage invoice={this.props.invoice}
                          companyDetails={this.props.companyDetails}
                          personalDetails={this.props.personalDetails}
+                         language={'EN'}
                          currentPage={2}
                          totalPages={2}>
                 <HoursTable items={this.props.invoice.workDays}></HoursTable>
                 <Spacing height={20}></Spacing>
                 <Issuer personalDetails={this.props.personalDetails}
+                        language={'EN'}
                         companyDetails={this.props.companyDetails}/>
             </GenericPage>
         );

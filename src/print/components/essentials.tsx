@@ -1,8 +1,10 @@
-import {Component} from "react";
+import React, {Component} from "react";
 import {Invoice} from "../../models/invoice";
+import {Exchange} from "../../Exchange";
 
 export interface EssentialsProps {
     invoice: Invoice;
+    language: 'EN' | 'RO';
 }
 
 export class Essentials extends Component<EssentialsProps> {
@@ -29,8 +31,22 @@ export class Essentials extends Component<EssentialsProps> {
                     <div>
                         <span className="font-bold text-blue-800 uppercase">Due date:</span> {this.formatDueDate()}
                     </div>
+                    {this.props.language === 'RO' && <div>
+                        <br/>
+                        <span className="font-bold text-blue-800 uppercase">Curs Valutar USD:</span> {this.cursValutar()}
+                    </div>}
                 </div>
             </div>
         );
+    }
+
+    private cursValutar() {
+        const date = new Date(this.props.invoice.invoiceDate);
+        const rate = Exchange.getExchangeRate(date, "USD");
+        if (!rate) {
+            return <span>Rate not found</span>;
+        }
+        return <span>{Number(rate)}
+            </span>;
     }
 }
