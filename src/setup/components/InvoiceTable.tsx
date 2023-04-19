@@ -125,6 +125,8 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
                             this.props.setPrintInvoice(rowData, "EN");
+                            document.title = `Invoice ${rowData.invoiceNumber} EN`
+
                             setTimeout(() => {
                                 window.print()
                             }, 100);
@@ -140,6 +142,7 @@ export class InvoiceTable extends React.Component<InvoiceTablePropsAndDispatch, 
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         onClick={() => {
                             this.props.setPrintInvoice(rowData, "RO");
+                            document.title = `Invoice ${rowData.invoiceNumber} RO`
 
                             setTimeout(() => {
                                 window.print()
